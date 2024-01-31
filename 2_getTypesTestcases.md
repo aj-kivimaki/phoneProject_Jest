@@ -16,7 +16,7 @@ expect to return
 ["home", "work", "mobile"]
 ```
 
-### Test 2: some type will be an empty string `''`
+### Test 2: some type will be an empty string
 
 Modified data:
 
