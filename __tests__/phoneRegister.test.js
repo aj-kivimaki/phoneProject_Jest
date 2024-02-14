@@ -158,4 +158,203 @@ describe("Test cases for getPersonsNumbersByType", () => {
       ).toEqual(["555-8472643"]);
     });
   });
+
+  describe("Test cases for getAllNumbersByType", () => {
+    const register = new PhoneRegister(phones);
+
+    test("Test 1. type work", () => {
+      const result = [
+        {
+          firstname: "Leila",
+          lastname: "Hökki",
+          number: {
+            type: "work",
+            tel: "555-8472643",
+          },
+        },
+        {
+          firstname: "Leila",
+          lastname: "Hökki",
+          number: {
+            type: "work",
+            tel: "044-8223334",
+          },
+        },
+        {
+          firstname: "Matt",
+          lastname: "River",
+          number: {
+            type: "work",
+            tel: "044-3337465",
+          },
+        },
+      ];
+
+      expect(register.getAllNumbersByType("work")).toEqual(result);
+    });
+
+    test("Test 2. type mobile", () => {
+      const result = [
+        {
+          firstname: "Matt",
+          lastname: "River",
+          number: {
+            type: "mobile",
+            tel: "045-1129847",
+          },
+        },
+      ];
+
+      expect(register.getAllNumbersByType("mobile")).toEqual(result);
+    });
+
+    test("Test 3. type x", () => {
+      expect(register.getAllNumbersByType("x")).toEqual([]);
+    });
+
+    test("Test 4. missing parameter", () => {
+      expect(() => register.getAllNumbersByType()).toThrow("missing parameter");
+    });
+  });
+
+  describe("Test cases for getAllNumbers", () => {
+    test("Test 1. testing with default data", () => {
+      const register = new PhoneRegister(phones);
+      expect(register.getAllNumbers()).toEqual(phones);
+    });
+
+    test("Test 2. some phones missing", () => {
+      const testData = [
+        {
+          firstname: "Leila",
+          lastname: "Hökki",
+          phones: [
+            { type: "home", number: "55-1234567" },
+            { type: "work", number: "555-8472643" },
+            { type: "work", number: "044-8223334" },
+          ],
+        },
+        {
+          firstname: "Matt",
+          lastname: "River",
+          phones: [],
+        },
+      ];
+
+      const result = [
+        {
+          firstname: "Leila",
+          lastname: "Hökki",
+          phones: [
+            { type: "home", number: "55-1234567" },
+            { type: "work", number: "555-8472643" },
+            { type: "work", number: "044-8223334" },
+          ],
+        },
+      ];
+
+      const register = new PhoneRegister(testData);
+      expect(register.getAllNumbers()).toEqual(result);
+    });
+
+    test("Test 3. some phones missing #2", () => {
+      const testData = [
+        {
+          firstname: "Vera",
+          lastname: "Smith",
+          phones: [],
+        },
+        {
+          firstname: "Leila",
+          lastname: "Hökki",
+          phones: [
+            { type: "home", number: "55-1234567" },
+            { type: "work", number: "555-8472643" },
+            { type: "work", number: "044-8223334" },
+          ],
+        },
+        {
+          firstname: "Matt",
+          lastname: "River",
+          phones: [],
+        },
+        {
+          firstname: "Mary",
+          lastname: "Jones",
+          phones: [{ type: "home", number: "918273645" }],
+        },
+      ];
+
+      const result = [
+        {
+          firstname: "Leila",
+          lastname: "Hökki",
+          phones: [
+            { type: "home", number: "55-1234567" },
+            { type: "work", number: "555-8472643" },
+            { type: "work", number: "044-8223334" },
+          ],
+        },
+        {
+          firstname: "Mary",
+          lastname: "Jones",
+          phones: [{ type: "home", number: "918273645" }],
+        },
+      ];
+
+      const register = new PhoneRegister(testData);
+      expect(register.getAllNumbers()).toEqual(result);
+    });
+
+    test("Test 4. all phones missing", () => {
+      const testData = [
+        {
+          firstname: "Leila",
+          lastname: "Hökki",
+          phones: [],
+        },
+        {
+          firstname: "Matt",
+          lastname: "River",
+          phones: [],
+        },
+      ];
+
+      const result = [];
+
+      const register = new PhoneRegister(testData);
+      expect(register.getAllNumbers()).toEqual(result);
+    });
+
+    test("Test 5. all persons missing", () => {
+      const testData = [];
+      const result = [];
+
+      const register = new PhoneRegister(testData);
+      expect(register.getAllNumbers()).toEqual(result);
+    });
+  });
+
+  describe("Test cases for getName", () => {
+    const register = new PhoneRegister(phones);
+
+    describe("Tests 1. - 2. number found", () => {
+      const testData = [
+        ["044-8223334", { firstname: "Leila", lastname: "Hökki" }],
+        ["045-1129847", { firstname: "Matt", lastname: "River" }],
+      ];
+
+      test.each(testData)("number %s returns %p", (number, result) => {
+        expect(register.getName(number)).toEqual(result);
+      });
+    });
+
+    test("Test 3. wrong number", () => {
+      expect(register.getName("0000")).toBeNull();
+    });
+
+    test("Test 4. missing parameter", () => {
+      expect(register.getName()).toBeNull();
+    });
+  });
 });

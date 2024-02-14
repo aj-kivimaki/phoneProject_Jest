@@ -126,7 +126,7 @@ The format of the returned object in the array is:
     "lastname": "River",
     "number": {
       "type": "mobile",
-      "number": "045-1129847"
+      "tel": "045-1129847"
     }
   }
 ]

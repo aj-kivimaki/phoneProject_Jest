@@ -113,8 +113,16 @@ returns
     "lastname": "River",
     "number": {
       "type": "mobile",
-      "number": "045-1129847"
+      "tel": "045-1129847"
     }
   }
 ]
 ```
+
+### Test 3. type x
+
+returns `[]`
+
+### Test 4. missing parameter
+
+if parameter is missing, throws an exception `'missing parameter'`
